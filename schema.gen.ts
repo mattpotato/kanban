@@ -88,7 +88,7 @@ export interface Database {
           created_at: string
           creator_id: string
           id: string
-          position: number | null
+          position: number
           project_id: string | null
           title: string | null
         }
@@ -96,7 +96,7 @@ export interface Database {
           created_at?: string
           creator_id: string
           id?: string
-          position?: number | null
+          position?: number
           project_id?: string | null
           title?: string | null
         }
@@ -104,7 +104,7 @@ export interface Database {
           created_at?: string
           creator_id?: string
           id?: string
-          position?: number | null
+          position?: number
           project_id?: string | null
           title?: string | null
         }

@@ -32,7 +32,7 @@ const TaskColumnTitle: React.FC<Props> = ({ data }) => {
     toggleInput();
   }
 
-  return <div className="flex">
+  return <div className="flex flex-1">
     {showInput ?
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <input {...register("title", { required: true })}

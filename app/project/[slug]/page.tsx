@@ -61,11 +61,11 @@ export default function Page({ params }: { params: { slug: string } }) {
     const { source, destination, type } = result;
     if (!destination) return;
 
-    console.log({ result })
     if (type === "column") {
       const sourceList = columns[columnOrder[source.index]];
       const newList = columnOrder.filter((_, idx) => idx !== source.index);
       newList.splice(destination.index, 0, columnOrder[source.index]);
+      setColumnOrder(newList);
       let newPosition = 0;
       if (destination.index === Object.keys(columns).length - 1) {
         const lastItem = columns[columnOrder[destination.index]];
@@ -77,7 +77,9 @@ export default function Page({ params }: { params: { slug: string } }) {
       }
       else {
         const firstItem = columns[columnOrder[destination.index]];
-        const secondItem = columns[columnOrder[destination.index + 1]];
+        const offset = source.index === Object.keys(columns).length - 1 ? -1 : + 1;
+        const secondItem = columns[columnOrder[destination.index + offset]];
+        console.log({ firstItem, secondItem });
         newPosition = (firstItem.position + secondItem.position) / 2;
       }
       setColumns((prev) => {
@@ -89,13 +91,23 @@ export default function Page({ params }: { params: { slug: string } }) {
           }
         }
       })
-      setColumnOrder(newList);
       try {
         await supabase.from("task_list").update({ "position": newPosition }).eq("id", sourceList.id);
       } catch (err) {
         console.log(err);
       }
       return;
+    }
+  }
+
+  const handleDeleteColumn = async (id: string) => {
+    try {
+      await supabase.from("task_list").delete().eq("id", id);
+      setColumnOrder((prev) => {
+        return prev.filter((columnId) => columnId !== id);
+      })
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -115,7 +127,11 @@ export default function Page({ params }: { params: { slug: string } }) {
                     {...provided.draggableProps}
                     ref={provided.innerRef}
                     {...provided.dragHandleProps}>
-                    <TaskColumnTitle data={col} />
+                      <div className="flex justify-between flex-wrap">
+                        <TaskColumnTitle data={col} />
+                        <button onClick={() => handleDeleteColumn(col.id)}>X</button>
+                      </div>
+                      <div>position {col.position}</div>
                   </div>
                 )}
               </Draggable>

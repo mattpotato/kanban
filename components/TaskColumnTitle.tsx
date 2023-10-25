@@ -11,7 +11,7 @@ type Inputs = {
 }
 
 const TaskColumnTitle: React.FC<Props> = ({ data }) => {
-  const [showInput, setShowInput] = useState(true);
+  const [showInput, setShowInput] = useState(false);
   const { register, handleSubmit } = useForm<Inputs>();
   const { title, id } = data;
   const [columnTitle, setColumnTitle] = useState(title ?? "Untitled List");

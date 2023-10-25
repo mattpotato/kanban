@@ -33,9 +33,9 @@ export default function Page({ params }: { params: { slug: string } }) {
       newPosition = (columns[columns.length - 1].position ?? 0) + 65535
     }
     if (user.data.user) {
-      const res = await supabase.from("task_list").insert({ title, creator_id: user.data.user.id, project_id: params.slug, position: newPosition }).single();
+      const res = await supabase.from("task_list").insert({ title, creator_id: user.data.user.id, project_id: params.slug, position: newPosition }).select();
       if (res.data) {
-        setColumns((prev) => [...prev, res])
+        setColumns((prev) => [...prev, res.data[0]])
       }
     }
   }

@@ -16,7 +16,9 @@ export default function RootLayout({
       <body className="h-full">
         <main className="min-h-screen bg-background flex flex-col">
           <NavBar />
-          {children}
+          <div className="p-4 bg-green-300 flex flex-1 h-full max-w-full">
+            {children}
+          </div>
         </main>
       </body>
     </html>

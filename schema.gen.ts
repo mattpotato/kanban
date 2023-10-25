@@ -59,22 +59,69 @@ export interface Database {
         Row: {
           created_at: string
           creator_id: string | null
-          id: number
+          id: string
           title: string | null
         }
         Insert: {
           created_at?: string
           creator_id?: string | null
-          id?: number
+          id?: string
           title?: string | null
         }
         Update: {
           created_at?: string
           creator_id?: string | null
-          id?: number
+          id?: string
           title?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "project_creator_id_fkey"
+            columns: ["creator_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      task_list: {
+        Row: {
+          created_at: string
+          creator_id: string
+          id: string
+          position: number | null
+          project_id: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          creator_id: string
+          id?: string
+          position?: number | null
+          project_id?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string
+          id?: string
+          position?: number | null
+          project_id?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_list_creator_id_fkey"
+            columns: ["creator_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_list_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "project"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {

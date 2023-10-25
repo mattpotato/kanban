@@ -1,5 +1,6 @@
 "use client"
 import ProjectTitle from "@/components/ProjectTitle";
+import TaskColumnDropDown from "@/components/TaskColumnDropdown";
 import TaskColumnTitle from "@/components/TaskColumnTitle";
 import { createClient } from "@/utils/supabase/client";
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
@@ -129,7 +130,7 @@ export default function Page({ params }: { params: { slug: string } }) {
                     {...provided.dragHandleProps}>
                       <div className="flex justify-between flex-wrap">
                         <TaskColumnTitle data={col} />
-                        <button onClick={() => handleDeleteColumn(col.id)}>X</button>
+                        <TaskColumnDropDown onDelete={() => handleDeleteColumn(col.id)}/>
                       </div>
                       <div>position {col.position}</div>
                   </div>

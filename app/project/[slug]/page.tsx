@@ -1,5 +1,6 @@
 "use client"
-import ProjectList from "@/components/ProjectList";
+import ProjectTitle from "@/components/ProjectTitle";
+import TaskColumnTitle from "@/components/TaskColumnTitle";
 import { createClient } from "@/utils/supabase/client";
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -40,10 +41,12 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   return <div className="flex flex-col flex-1 bg-green-200 w-full">
-    <input value={project?.title ?? ""} />
+    {project && <ProjectTitle project={project} />}
     <div className="flex gap-4 overflow-x-scroll flex-1">
       {columns.map((col) => {
-        return <div key={col.id} className="bg-slate-400 rounded p-4 w-96 flex-grow-0 flex-shrink-0 self-start">{col.title}</div>
+        return <div key={col.id} className="bg-slate-400 rounded p-4 w-96 flex-grow-0 flex-shrink-0 self-start">
+          <TaskColumnTitle data={col} />
+          </div>
       })}
       <AddListButton onCreateList={handleCreateList}/>
     </div>

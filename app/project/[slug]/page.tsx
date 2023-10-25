@@ -2,13 +2,15 @@
 import ProjectTitle from "@/components/ProjectTitle";
 import TaskColumnTitle from "@/components/TaskColumnTitle";
 import { createClient } from "@/utils/supabase/client";
+import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const [project, setProject] = useState<Project>();
   const supabase = createClient();
-  const [columns, setColumns] = useState<TaskList[]>([]);
+  const [columns, setColumns] = useState<{ [key: string]: TaskList }>({});
+  const [columnOrder, setColumnOrder] = useState<string[]>([]);
 
   useEffect(() => {
     const loadProject = async () => {
@@ -18,7 +20,13 @@ export default function Page({ params }: { params: { slug: string } }) {
         setProject(projectData.data);
       }
       if (taskListData.data) {
-        setColumns(taskListData.data)
+        const colMap = taskListData.data.reduce<{ [key: string]: TaskList }>((acc, curr) => {
+          acc[curr.id] = curr;
+          return acc;
+        }, {})
+        const colOrder = Object.keys(colMap).sort((a, b) => (colMap[a].position ?? 0) - (colMap[b].position ?? 0));
+        setColumns(colMap);
+        setColumnOrder(colOrder);
       }
     }
     if (params.slug) {
@@ -29,27 +37,96 @@ export default function Page({ params }: { params: { slug: string } }) {
   const handleCreateList = async (title: string) => {
     const user = await supabase.auth.getUser();
     let newPosition = 65535;
-    if (columns.length > 0) {
-      newPosition = (columns[columns.length - 1].position ?? 0) + 65535
+    if (columnOrder.length > 0) {
+      const lastColumnId = columnOrder[columnOrder.length - 1];
+      const lastColumn = columns[lastColumnId];
+      newPosition = (lastColumn.position ?? 0) + 65535
     }
+
     if (user.data.user) {
       const res = await supabase.from("task_list").insert({ title, creator_id: user.data.user.id, project_id: params.slug, position: newPosition }).select();
       if (res.data) {
-        setColumns((prev) => [...prev, res.data[0]])
+        setColumns((prev) => {
+          return {
+            ...prev,
+            [res.data[0].id]: res.data[0]
+          }
+        })
+        setColumnOrder((prev) => [...prev, res.data[0].id]);
       }
+    }
+  }
+
+  const handleDragEnd = async (result: DropResult) => {
+    const { source, destination, type } = result;
+    if (!destination) return;
+
+    console.log({ result })
+    if (type === "column") {
+      const sourceList = columns[columnOrder[source.index]];
+      const newList = columnOrder.filter((_, idx) => idx !== source.index);
+      newList.splice(destination.index, 0, columnOrder[source.index]);
+      let newPosition = 0;
+      if (destination.index === Object.keys(columns).length - 1) {
+        const lastItem = columns[columnOrder[destination.index]];
+        newPosition = lastItem.position + 65535;
+      }
+      else if (destination.index === 0) {
+        const firstItem = columns[columnOrder[destination.index]];
+        newPosition = firstItem.position / 2;
+      }
+      else {
+        const firstItem = columns[columnOrder[destination.index]];
+        const secondItem = columns[columnOrder[destination.index + 1]];
+        newPosition = (firstItem.position + secondItem.position) / 2;
+      }
+      setColumns((prev) => {
+        return {
+          ...prev,
+          [sourceList.id]: {
+            ...prev[sourceList.id],
+            position: newPosition
+          }
+        }
+      })
+      setColumnOrder(newList);
+      try {
+        await supabase.from("task_list").update({ "position": newPosition }).eq("id", sourceList.id);
+      } catch (err) {
+        console.log(err);
+      }
+      return;
     }
   }
 
   return <div className="flex flex-col flex-1 bg-green-200 w-full">
     {project && <ProjectTitle project={project} />}
-    <div className="flex gap-4 overflow-x-scroll flex-1">
-      {columns.map((col) => {
-        return <div key={col.id} className="bg-slate-400 rounded p-4 w-96 flex-grow-0 flex-shrink-0 self-start">
-          <TaskColumnTitle data={col} />
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <Droppable droppableId="board" type="column" direction="horizontal">
+        {(provided) => (
+          <div className="flex overflow-x-scroll flex-1" ref={provided.innerRef} {...provided.droppableProps}>
+            {columnOrder.map((id, index) => {
+              const col = columns[id]
+              if (!col) return null;
+              return <Draggable index={index} draggableId={col.id} key={"col-" + col.id}>
+                {(provided) => (
+                  <div
+                    className="bg-slate-400 rounded p-4 w-96 flex-grow-0 flex-shrink-0 self-start mx-4"
+                    {...provided.draggableProps}
+                    ref={provided.innerRef}
+                    {...provided.dragHandleProps}>
+                    <TaskColumnTitle data={col} />
+                  </div>
+                )}
+              </Draggable>
+            })}
+            {provided.placeholder}
+            <AddListButton onCreateList={handleCreateList} />
           </div>
-      })}
-      <AddListButton onCreateList={handleCreateList}/>
-    </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+
   </div>
 
 }

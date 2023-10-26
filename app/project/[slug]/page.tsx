@@ -7,11 +7,6 @@ import { AddListButton } from "@/components/AddListButton";
 import TaskColumn from "@/components/TaskColumn/TaskColumn";
 import { useProjectContext }  from "@/components/contexts/ProjectContextState";
 
-interface ListWithTaskIds extends TaskList {
-  taskIds: string[]
-}
-
-
 export default function Page({ params }: { params: { slug: string } }) {
   const supabase = createClient();
 
@@ -141,15 +136,12 @@ export default function Page({ params }: { params: { slug: string } }) {
           position: task.id === originalTaskId ? newPosition : task.position
         }));
       })
-      console.log({ newPosition, originalTaskId })
       try {
-        console.log("WADDUP", originalTaskId);
         const res = await supabase
           .from("task")
           .update({ position: newPosition })
           .eq("id", originalTaskId)
           .select();
-        console.log({ res })
 
       } catch (err) {
         console.log(err);

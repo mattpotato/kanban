@@ -12,8 +12,7 @@ interface Props {
 }
 const TaskColumn: React.FC<Props> = ({ data, index }) => {
   const supabase = createClient();
-  const { tasks, setTasks, setColumns, columns } = useProjectContext();
-  console.log({ tasks })
+  const { tasks, setTasks, setColumns } = useProjectContext();
   const handleAddTask = async (title: string) => {
     const { data: userData, error } = await supabase.auth.getUser();
     if (userData.user) {

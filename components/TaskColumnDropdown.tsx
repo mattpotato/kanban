@@ -1,5 +1,6 @@
 import { Menu, Transition } from '@headlessui/react'
 import React, { Fragment } from 'react'
+import { FaEllipsis } from "react-icons/fa6"
 
 interface Props {
   onDelete: () => void;
@@ -9,7 +10,7 @@ const TaskColumnDropDown: React.FC<Props> = ({ onDelete }) => {
   return (
     <div className="relative">
       <Menu>
-        <Menu.Button>X</Menu.Button>
+        <Menu.Button><FaEllipsis className='w-[25px] h-[25px]' /></Menu.Button>
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"

@@ -38,10 +38,8 @@ export const ProjectContextProvider: React.FC<ProjectContextProviderProps> = ({ 
 
   useEffect(() => {
     const loadData = async () => {
-      console.log("brother man!!!!!!!!!!");
       const { data, error } = await supabase.from("project").select().eq("id", projectId).single();
       setProject(data);
-      console.log({ data });
       const { data: taskListData } = await supabase.from("task_list").select().eq("project_id", projectId).select();
       const { data: taskData } = await supabase.from("task").select().eq("project_id", projectId).select();
 

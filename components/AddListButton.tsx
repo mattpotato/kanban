@@ -36,7 +36,7 @@ export const AddListButton: React.FC<AddListButtonProps> = ({ onCreateList }) =>
     reset({});
   };
 
-  return <div className="w-80 bg-slate-400 self-start p-4 rounded flex">
+  return <div className="w-80 bg-slate-400 self-start p-4 rounded flex select-none">
     {showInput ?
       <form className="flex flex-1 flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         <input {...register("listTitle", { required: true })}

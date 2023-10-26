@@ -61,7 +61,7 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
     <Draggable index={index} draggableId={data.id}>
       {(provided) => (
         <div
-          className="bg-slate-400 rounded p-4 w-80 flex-grow-0 flex-shrink-0 self-start mx-4"
+          className="bg-slate-400 rounded p-4 w-80 flex-grow-0 flex-shrink-0 self-start mx-4 select-none"
           {...provided.draggableProps}
           ref={provided.innerRef}
           {...provided.dragHandleProps}>

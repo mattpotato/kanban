@@ -1,5 +1,3 @@
-drop policy "Enable update for projects on email" on "public"."project";
-
 alter table "public"."task_list" alter column "position" set not null;
 
 create policy "Enable update for projects based on user id"

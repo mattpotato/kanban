@@ -83,6 +83,49 @@ export interface Database {
           }
         ]
       }
+      task: {
+        Row: {
+          created_at: string
+          creator_id: string | null
+          id: string
+          list_id: string | null
+          position: number | null
+          project_id: string | null
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          creator_id?: string | null
+          id?: string
+          list_id?: string | null
+          position?: number | null
+          project_id?: string | null
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          creator_id?: string | null
+          id?: string
+          list_id?: string | null
+          position?: number | null
+          project_id?: string | null
+          title?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_list_id_fkey"
+            columns: ["list_id"]
+            referencedRelation: "task_list"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "project"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       task_list: {
         Row: {
           created_at: string

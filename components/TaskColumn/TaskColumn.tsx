@@ -12,7 +12,7 @@ interface Props {
 }
 const TaskColumn: React.FC<Props> = ({ data, index }) => {
   const supabase = createClient();
-  const { tasks, setTasks, setColumns } = useProjectContext();
+  const { tasks, setTasks, setColumns, setColumnOrder } = useProjectContext();
   const handleAddTask = async (title: string) => {
     const { data: userData, error } = await supabase.auth.getUser();
     if (userData.user) {
@@ -44,8 +44,17 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
   }
 
   const handleDeleteColumn = async () => {
-    await supabase.from("task_list").delete().eq("id", data.id);
-
+    try {
+      await supabase.from("task_list").delete().eq("id", data.id);
+      setColumns((prev) => {
+        const newColumns = {...prev}
+        delete newColumns[data.id]
+        return newColumns;
+      })
+      setColumnOrder((prev) => prev.filter((col) => col === data.id));
+    } catch(err) {
+      console.error(err);
+    }
   }
 
   return (

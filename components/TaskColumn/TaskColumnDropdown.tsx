@@ -20,7 +20,7 @@ const TaskColumnDropDown: React.FC<Props> = ({ onDelete }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="flex flex-col absolute top-full bg-white rounded border border-gray-400 p-2">
+          <Menu.Items className="flex flex-col absolute top-full bg-white rounded border border-gray-400 p-2 w-40 cursor-pointer">
             <Menu.Item>
               {({ active }) => (
                 <a

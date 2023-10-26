@@ -90,6 +90,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       } catch (err) {
         console.log(err);
       }
+      return;
     }
     if (source.droppableId === destination.droppableId) {
       const sourceList = columns[source.droppableId];

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export type Inputs = {
@@ -13,6 +13,7 @@ export interface AddListButtonProps {
 export const AddListButton: React.FC<AddListButtonProps> = ({ onCreateList }) => {
   const [showInput, setShowInput] = useState(false);
   const { register, handleSubmit, reset } = useForm<Inputs>();
+  const buttonRef = useRef(null);
 
   const toggleInput = () => {
     setShowInput((prev) => !prev);
@@ -21,7 +22,7 @@ export const AddListButton: React.FC<AddListButtonProps> = ({ onCreateList }) =>
 
   const handleBlur = (e: React.FocusEvent ) => {
     console.log(e.relatedTarget?.id);
-    if (e.relatedTarget?.id === "addListButton") {
+    if (e.relatedTarget === buttonRef.current) {
       e.preventDefault();
       return;
     }
@@ -44,7 +45,7 @@ export const AddListButton: React.FC<AddListButtonProps> = ({ onCreateList }) =>
           autoComplete="off"
           className="rounded flex-1 w-full p-2"
           onBlur={handleBlur}/>
-        <button type="submit" className="flex-1 flex justify-start" id="addListButton"><span>+</span>Add new list</button>
+        <button type="submit" className="flex-1 flex justify-start" ref={buttonRef}><span>+</span>Add new list</button>
       </form>
       :
       <button onClick={toggleInput} className="flex-1 justify-start">

@@ -31,7 +31,7 @@ export const AddTaskButton: React.FC<Props> = ({ onAddTask }) => {
           placeholder="Enter task title..."
           autoFocus
           autoComplete="off"
-          className="rounded flex-1 p-2 m-2"
+          className="rounded flex-1 p-2 m-1"
           onBlur={toggleInput} />
         <button type="submit" className="flex-1 p-2 flex items-start"><span>+</span>Add task</button>
       </form>

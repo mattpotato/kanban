@@ -64,7 +64,7 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
           <div>position {data.position}</div>
           <Droppable droppableId={data.id} type="task">
             {(provided) => {
-              return <div ref={provided.innerRef} {...provided.droppableProps}>
+              return <div ref={provided.innerRef} {...provided.droppableProps} className="min-h-[50px]">
                 {data.taskIds.map((taskId, index) => {
                   const task = tasks.find((task) => taskId === task.id);
                   if (!task) return null;

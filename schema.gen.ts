@@ -89,7 +89,7 @@ export interface Database {
           creator_id: string | null
           id: string
           list_id: string | null
-          position: number | null
+          position: number
           project_id: string | null
           title: string | null
         }
@@ -98,7 +98,7 @@ export interface Database {
           creator_id?: string | null
           id?: string
           list_id?: string | null
-          position?: number | null
+          position?: number
           project_id?: string | null
           title?: string | null
         }
@@ -107,7 +107,7 @@ export interface Database {
           creator_id?: string | null
           id?: string
           list_id?: string | null
-          position?: number | null
+          position?: number
           project_id?: string | null
           title?: string | null
         }

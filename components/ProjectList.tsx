@@ -20,7 +20,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
 
 
 export default function ProjectList() {
-  const [projects, setProjects] = useState<Project[]>([]);
+const [projects, setProjects] = useState<Project[]>([]);
   const supabase = createClient();
   const router = useRouter();
 

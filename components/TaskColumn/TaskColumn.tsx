@@ -13,14 +13,24 @@ interface Props {
 }
 const TaskColumn: React.FC<Props> = ({ data, index }) => {
   const supabase = createClient();
-  const { tasks, setTasks, setColumns, setColumnOrder } = useProjectContext();
+  const { tasks, setTasks, columns, setColumns, setColumnOrder } = useProjectContext();
   const handleAddTask = async (title: string) => {
     const { data: userData, error } = await supabase.auth.getUser();
     if (userData.user) {
+      let newPosition = 65535;
+      if (data.taskIds.length > 0) {
+        const lastTaskId = columns[data.id].taskIds[data.taskIds.length - 1];
+        console.log({ lastTaskId })
+        console.log(tasks);
+        const lastTask = tasks.find((task) => task.id === lastTaskId);
+        if (lastTask) {
+          newPosition = lastTask.position + 65535
+        }
+      }
       const task = await supabase.from("task").insert({
         list_id: data.id,
         title,
-        position: 65535,
+        position: newPosition,
         creator_id: userData.user.id,
         project_id: data.project_id,
       }).select();
@@ -52,7 +62,7 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
         delete newColumns[data.id]
         return newColumns;
       })
-      setColumnOrder((prev) => prev.filter((col) => col === data.id));
+      setColumnOrder((prev) => prev.filter((col) => col !== data.id));
     } catch(err) {
       console.error(err);
     }
@@ -62,17 +72,19 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
     <Draggable index={index} draggableId={data.id}>
       {(provided) => (
         <div
-          className="bg-white rounded p-4 w-80 flex-grow-0 flex-shrink-0 self-start mx-4 select-none border border-gray-400 shadow-md"
+          className={`bg-white rounded p-4 w-80 flex-grow-0 flex-shrink-0 self-start mx-4 select-none border border-gray-400 shadow-md`}
           {...provided.draggableProps}
           ref={provided.innerRef}
-          {...provided.dragHandleProps}>
+          {...provided.dragHandleProps}
+          
+          >
           <div className="flex justify-between flex-wrap">
             <TaskColumnTitle data={data} />
             <TaskColumnDropDown onDelete={handleDeleteColumn} />
           </div>
           <Droppable droppableId={data.id} type="task">
-            {(provided) => {
-              return <div ref={provided.innerRef} {...provided.droppableProps} className="min-h[20px] mb-4">
+            {(provided, snapshot) => {
+              return <div ref={provided.innerRef} {...provided.droppableProps} className={`min-h[20px] mb-4 ${snapshot.isDraggingOver ? 'bg-blue-200' : ""} duration-300 ease-in-out`}>
                 {data.taskIds.map((taskId, index) => {
                   const task = tasks.find((task) => taskId === task.id);
                   if (!task) return null;
@@ -101,13 +113,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ data }) => {
     <div>
       {data.title} position: {data.position}
     </div>
-    <FaPen size={12} className="group-hover:opacity-100 opacity-0" />
+    <FaPen size={12} className="group-hover:opacity-100 opacity-0 cursor-pointer" onClick={() => {}} />
     
     </div>
 }
 
 const DraggableTaskCard: React.FC<TaskCardProps> = ({ data, index }) => {
-
   return (
     <Draggable draggableId={"t" + data.id} index={index}>
       {(provided) => (

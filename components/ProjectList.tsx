@@ -14,8 +14,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   const handleClick = () => {
     router.push(`/project/${project.id}`);
   }
-  return <button className="w-80 border rounded-sm p-2 flex flex-1 justify-center items-center shadow-md hover:bg-gray-200 transition duration-300 ease-in-out text-lg" onClick={handleClick}>
+  return <button className="w-80 border rounded-sm p-2 flex flex-1 justify-center items-center shadow-md hover:bg-gray-200 transition duration-300 ease-in-out text-lg relative" onClick={handleClick}>
     {project.title}
+    <FaPlus className="absolute top-2 right-2"/>
   </button>
 }
 

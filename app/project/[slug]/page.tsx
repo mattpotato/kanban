@@ -1,11 +1,10 @@
 "use client"
 import ProjectTitle from "@/components/ProjectTitle";
 import { createClient } from "@/utils/supabase/client";
-import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
-import { useEffect, useState } from "react"
+import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd";
 import { AddListButton } from "@/components/AddListButton";
 import TaskColumn from "@/components/TaskColumn/TaskColumn";
-import { useProjectContext }  from "@/components/contexts/ProjectContextState";
+import { useProjectContext } from "@/components/contexts/ProjectContextState";
 
 export default function Page({ params }: { params: { slug: string } }) {
   const supabase = createClient();
@@ -93,15 +92,14 @@ export default function Page({ params }: { params: { slug: string } }) {
       const originalTaskId = sourceListItems[source.index];
       let newPosition = 65535;
       if (destination.index === sourceListItems.length - 1) {
-        console.log("AT THE END");
-        const taskId = sourceListItems[destination.index] ;
+        const taskId = sourceListItems[destination.index];
         const lastTask = tasks.find((task) => task.id === taskId);
         if (lastTask) {
           newPosition = lastTask.position + 65535;
         }
       }
       else if (destination.index === 0) {
-        const taskId = sourceListItems[destination.index] ;
+        const taskId = sourceListItems[destination.index];
         const firstTask = tasks.find((task) => task.id === taskId);
 
         if (firstTask) {
@@ -111,7 +109,8 @@ export default function Page({ params }: { params: { slug: string } }) {
       }
       else {
         const firstTaskId = sourceListItems[destination.index];
-        const secondTaskId = sourceListItems[destination.index + 1];
+        const offset = source.index === sourceListItems.length - 1 ? - 1 : + 1;
+        const secondTaskId = sourceListItems[destination.index + offset];
         const firstTask = tasks.find((task) => task.id === firstTaskId);
         const secondTask = tasks.find((task) => task.id === secondTaskId);
         if (firstTask && secondTask) {
@@ -119,7 +118,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         }
       }
 
-      const newList = sourceListItems.filter((_ , idx) => idx !== source.index);
+      const newList = sourceListItems.filter((_, idx) => idx !== source.index);
       newList.splice(destination.index, 0, sourceList.taskIds[source.index]);
 
       const newData = {
@@ -154,26 +153,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       const destinationList = columns[destination.droppableId];
       const sourceListItems = [...sourceList.taskIds];
       const originalTaskId = sourceListItems[source.index];
-      const [removed] = sourceListItems.splice(source.index, 1);
-
-      const newStartCol  = {
-        ...sourceList,
-        taskIds: sourceListItems,
-      }
-
       const destinationItems = [...destinationList.taskIds];
-      destinationItems.splice(destination.index, 0, removed);
-
-      const newEndCol = {
-        ...destinationList,
-        taskIds: destinationItems,
-      }
-
-      const newState = {
-        ...columns,
-        [source.droppableId] : newStartCol,
-        [destination.droppableId] : newEndCol,
-      }
 
       let newPosition = 65535;
       if (destination.index === destinationList.taskIds.length) {
@@ -192,7 +172,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       }
       else {
         const firstTaskId = destinationItems[destination.index];
-        const secondTaskId = destinationItems[destination.index + 1];
+        const secondTaskId = destinationItems[destination.index - 1];
         const firstTask = tasks.find((task) => task.id === firstTaskId);
         const secondTask = tasks.find((task) => task.id === secondTaskId);
 
@@ -200,6 +180,23 @@ export default function Page({ params }: { params: { slug: string } }) {
           newPosition = (firstTask.position + secondTask.position) / 2;
         }
       }
+      const newStartCol = {
+        ...sourceList,
+        taskIds: sourceListItems,
+      }
+      const [removed] = sourceListItems.splice(source.index, 1);
+      destinationItems.splice(destination.index, 0, removed);
+      const newEndCol = {
+        ...destinationList,
+        taskIds: destinationItems,
+      }
+
+      const newState = {
+        ...columns,
+        [source.droppableId]: newStartCol,
+        [destination.droppableId]: newEndCol,
+      }
+
       setTasks((prev) => {
         return prev.map((task) => ({
           ...task,
@@ -223,11 +220,13 @@ export default function Page({ params }: { params: { slug: string } }) {
   }
 
   return <div className="flex flex-col flex-1 w-full">
-    {project && <ProjectTitle project={project as unknown as Project} />}
+    <div className="mb-4">
+      {project && <ProjectTitle project={project as unknown as Project} />}
+    </div>
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="board" type="column" direction="horizontal">
         {(provided) => (
-          <div className="flex overflow-x-scroll flex-1" ref={provided.innerRef} {...provided.droppableProps}>
+          <div className="flex overflow-x-auto flex-1" ref={provided.innerRef} {...provided.droppableProps}>
             {columnOrder.map((id, index) => {
               const col = columns[id]
               if (!col) return null;

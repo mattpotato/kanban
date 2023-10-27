@@ -32,14 +32,14 @@ const ProjectTitle: React.FC<Props> = ({ project }) => {
     toggleInput();
   }
 
-  return <div className="p-2">
+  return <div className="mx-2">
     {showInput ?
       <form onSubmit={handleSubmit(onSubmit)}>
         <input {...register("title", { required: true })}
           placeholder="Enter project title"
           autoFocus
           autoComplete="off"
-          className="rounded p-2"
+          className="rounded p-2 mb-1 mx-2"
           onBlur={toggleInput}
           defaultValue={projectTitle}
           onFocus={(e) => e.target.select()}

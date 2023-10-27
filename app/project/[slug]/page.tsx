@@ -222,7 +222,7 @@ export default function Page({ params }: { params: { slug: string } }) {
     }
   }
 
-  return <div className="flex flex-col flex-1 bg-green-200 w-full">
+  return <div className="flex flex-col flex-1 w-full">
     {project && <ProjectTitle project={project as unknown as Project} />}
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="board" type="column" direction="horizontal">

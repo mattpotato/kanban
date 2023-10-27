@@ -5,6 +5,7 @@ import TaskColumnDropDown from "./TaskColumnDropdown";
 import { AddTaskButton } from "./AddTaskButton";
 import { createClient } from "@/utils/supabase/client";
 import { ListWithTaskIds, useProjectContext } from "../contexts/ProjectContextState";
+import { FaPen } from "react-icons/fa6";
 
 interface Props {
   data: ListWithTaskIds
@@ -61,7 +62,7 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
     <Draggable index={index} draggableId={data.id}>
       {(provided) => (
         <div
-          className="bg-slate-400 rounded p-4 w-80 flex-grow-0 flex-shrink-0 self-start mx-4 select-none"
+          className="bg-white rounded p-4 w-80 flex-grow-0 flex-shrink-0 self-start mx-4 select-none border border-gray-400 shadow-md"
           {...provided.draggableProps}
           ref={provided.innerRef}
           {...provided.dragHandleProps}>
@@ -69,10 +70,9 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
             <TaskColumnTitle data={data} />
             <TaskColumnDropDown onDelete={handleDeleteColumn} />
           </div>
-          <div>position {data.position}</div>
           <Droppable droppableId={data.id} type="task">
             {(provided) => {
-              return <div ref={provided.innerRef} {...provided.droppableProps} className="min-h-[50px]">
+              return <div ref={provided.innerRef} {...provided.droppableProps} className="min-h[20px] mb-4">
                 {data.taskIds.map((taskId, index) => {
                   const task = tasks.find((task) => taskId === task.id);
                   if (!task) return null;
@@ -96,7 +96,14 @@ interface TaskCardProps {
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ data }) => {
-  return <div className="p-2 bg-white rounded">{data.title} position: {data.position}</div>
+  return <div className="p-2 bg-white rounded border border-gray-400 shadow-md flex items-center justify-between group">
+    
+    <div>
+      {data.title} position: {data.position}
+    </div>
+    <FaPen size={12} className="group-hover:opacity-100 opacity-0" />
+    
+    </div>
 }
 
 const DraggableTaskCard: React.FC<TaskCardProps> = ({ data, index }) => {

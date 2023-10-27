@@ -12,11 +12,17 @@ export default async function NavBar() {
       <Link href="/">Kanban</Link>
       <div className="flex gap-2 items-center">
         {user && <div>{user.email}</div>}
-        {user &&       <form action="/auth/sign-out" method="post">
-        <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
-          Logout
-        </button>
-      </form>}
+        {user && <form action="/auth/sign-out" method="post">
+          <button className="py-2 px-4 rounded-md no-underline bg-btn-background hover:bg-btn-background-hover">
+            Logout
+          </button>
+        </form>}
+        {!user && <Link
+          href="/login"
+          className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
+        >
+          Login
+        </Link>}
       </div>
     </nav>
   )

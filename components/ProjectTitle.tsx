@@ -32,7 +32,7 @@ const ProjectTitle: React.FC<Props> = ({ project }) => {
     toggleInput();
   }
 
-  return <div>
+  return <div className="p-2">
     {showInput ?
       <form onSubmit={handleSubmit(onSubmit)}>
         <input {...register("title", { required: true })}
@@ -46,7 +46,7 @@ const ProjectTitle: React.FC<Props> = ({ project }) => {
         />
       </form>
       :
-      <button onClick={toggleInput} className="flex-1 justify-start p-2">
+      <button onClick={toggleInput} className="flex-1 justify-start p-2 text-lg font-bold">
         {projectTitle}
       </button>
     }

@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { FaPlus } from "react-icons/fa6";
 
 export type Inputs = {
   taskTitle: string
@@ -45,12 +46,19 @@ export const AddTaskButton: React.FC<Props> = ({ onAddTask }) => {
           autoComplete="off"
           className="rounded flex-1 p-2 m-1"
           onBlur={handleBlur} />
-        <button type="submit" className="flex-1 p-2 flex items-start" ref={buttonRef}><span>+</span>Add task</button>
+        <button type="submit" className="flex-1 p-2 flex items-center gap-2" ref={buttonRef}>
+          <FaPlus className="inline" />
+        <span className="text-sm">
+          Add task
+        </span>
+        </button>
       </form>
       :
-      <button onClick={toggleInput} className="flex flex-1 justify-start items-start">
-        <span>+</span>
-        Add new task
+      <button onClick={toggleInput} className="flex flex-1 justify-start items-center gap-2">
+        <FaPlus className="inline"/>
+        <span className="text-sm">
+          Add new task
+        </span>
       </button>}
   </div>;
 

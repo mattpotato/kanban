@@ -10,7 +10,7 @@ const TaskColumnDropDown: React.FC<Props> = ({ onDelete }) => {
   return (
     <div className="relative">
       <Menu>
-        <Menu.Button><FaEllipsis className='w-[25px] h-[25px]' /></Menu.Button>
+        <Menu.Button><FaEllipsis className="hover:bg-slate-300 hover:opacity-90 rounded" size={24} /></Menu.Button>
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"

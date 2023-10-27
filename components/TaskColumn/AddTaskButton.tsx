@@ -37,14 +37,14 @@ export const AddTaskButton: React.FC<Props> = ({ onAddTask }) => {
     reset({});
   };
 
-  return <div className="self-start flex gap-2">
+  return <div className="self-start flex gap-2 mt-2">
     {showInput ?
       <form className="flex flex-1 flex-col gap-2" onSubmit={handleSubmit(onSubmit)}>
         <input {...register("taskTitle", { required: true })}
           placeholder="Enter task title..."
           autoFocus
           autoComplete="off"
-          className="rounded flex-1 p-2 m-1"
+          className="rounded flex-1 p-2 mx-1"
           onBlur={handleBlur} />
         <button type="submit" className="flex-1 p-2 flex items-center gap-2" ref={buttonRef}>
           <FaPlus className="inline" />
@@ -54,7 +54,7 @@ export const AddTaskButton: React.FC<Props> = ({ onAddTask }) => {
         </button>
       </form>
       :
-      <button onClick={toggleInput} className="flex flex-1 justify-start items-center gap-2">
+      <button onClick={toggleInput} className="flex flex-1 justify-start items-center gap-2 hover:bg-gray-200 duration-300 ease-in-out p-2 mx-1  rounded">
         <FaPlus className="inline"/>
         <span className="text-sm">
           Add new task

@@ -8,9 +8,13 @@ interface Props {
 
 const TaskColumnDropDown: React.FC<Props> = ({ onDelete }) => {
   return (
-    <div className="relative">
+    <div className="relative flex-grow-0 flex self-start">
       <Menu>
-        <Menu.Button><FaEllipsis className="hover:bg-slate-300 hover:opacity-90 rounded" size={24} /></Menu.Button>
+        <Menu.Button>
+          <div className="h-[30px] w-[30px] rounded-full flex justify-center items-center hover:bg-gray-200" onClick={() => { }}>
+            <FaEllipsis className="rounded" size={24} />
+          </div>
+        </Menu.Button>
         <Transition
           as={Fragment}
           enter="transition ease-out duration-100"
@@ -24,7 +28,7 @@ const TaskColumnDropDown: React.FC<Props> = ({ onDelete }) => {
             <Menu.Item>
               {({ active }) => (
                 <a
-                  className={`${active && 'bg-blue-400'}`}
+                  className={`${active && 'bg-gray-200'}`}
                   onClick={onDelete}
                 >
                   Delete

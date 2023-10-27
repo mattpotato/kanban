@@ -46,9 +46,9 @@ const TaskColumnTitle: React.FC<Props> = ({ data }) => {
         />
       </form>
       :
-      <button onClick={toggleInput} className="flex w-4/5 break-all">
+      <div onClick={toggleInput} className="flex w-4/5 break-all cursor-pointer">
         {columnTitle}
-      </button>
+      </div>
     }
   </div>
 }

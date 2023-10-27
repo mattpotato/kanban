@@ -84,7 +84,7 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
           </div>
           <Droppable droppableId={data.id} type="task">
             {(provided, snapshot) => {
-              return <div ref={provided.innerRef} {...provided.droppableProps} className={`min-h[20px] mb-4 ${snapshot.isDraggingOver ? 'bg-blue-200' : ""} duration-300 ease-in-out`}>
+              return <div ref={provided.innerRef} {...provided.droppableProps} className={`min-h[20px] mt-4 ${snapshot.isDraggingOver ? 'bg-blue-200' : ""} duration-300 ease-in-out`}>
                 {data.taskIds.map((taskId, index) => {
                   const task = tasks.find((task) => taskId === task.id);
                   if (!task) return null;
@@ -113,7 +113,9 @@ const TaskCard: React.FC<TaskCardProps> = ({ data }) => {
     <div>
       {data.title} position: {data.position}
     </div>
-    <FaPen size={12} className="group-hover:opacity-100 opacity-0 cursor-pointer" onClick={() => {}} />
+    <div className="h-[30px] w-[30px] bg-gray-200 rounded-full flex justify-center items-center group-hover:opacity-100 opacity-0" onClick={() => {}}>
+      <FaPen size={12} className="group-hover:opacity-100 opacity-0 cursor-pointer"/>
+    </div>
     
     </div>
 }

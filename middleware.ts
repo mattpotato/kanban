@@ -63,6 +63,12 @@ export async function middleware(request: NextRequest) {
 
     // If the session was refreshed, the request and response cookies will have been updated
     // If the session was not refreshed, the request and response cookies will be unchanged
+    const url = request.nextUrl.clone()   
+    const user = await supabase.auth.getUser();
+    if (url.pathname === '/' && user.data) {
+      url.pathname = '/dashboard'
+      return NextResponse.redirect(url)   
+    } 
     return response
   } catch (e) {
     // If you are here, a Supabase client could not be created!

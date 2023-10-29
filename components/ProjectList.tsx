@@ -2,7 +2,7 @@
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa6";
+import { FaEllipsis, FaPlus } from "react-icons/fa6";
 
 interface ProjectCardProps {
   project: Project
@@ -16,7 +16,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   }
   return <button className="w-80 border rounded-sm p-2 flex flex-1 justify-center items-center shadow-md hover:bg-gray-200 transition duration-300 ease-in-out text-lg relative" onClick={handleClick}>
     {project.title}
-    <FaPlus className="absolute top-2 right-2"/>
+    <div className="h-[30px] w-[30px] rounded-full flex justify-center items-center hover:bg-gray-400 absolute top-2 right-2" onClick={() => { }}>
+      <FaEllipsis size={24}/>
+    </div>
   </button>
 }
 

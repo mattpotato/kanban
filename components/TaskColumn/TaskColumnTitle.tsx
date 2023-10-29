@@ -32,7 +32,11 @@ const TaskColumnTitle: React.FC<Props> = ({ data }) => {
     toggleInput();
   }
 
-  return <div className="flex flex-1 w-4/5">
+  const handleBlur = () => {
+    handleSubmit(onSubmit)();
+  }
+
+  return <div className="flex w-5/6">
     {showInput ?
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <input {...register("title", { required: true })}
@@ -40,7 +44,7 @@ const TaskColumnTitle: React.FC<Props> = ({ data }) => {
           autoFocus
           autoComplete="off"
           className="rounded w-full"
-          onBlur={toggleInput}
+          onBlur={handleBlur}
           defaultValue={columnTitle}
           onFocus={(e) => e.target.select()}
         />

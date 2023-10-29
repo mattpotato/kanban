@@ -6,6 +6,9 @@ import { AddTaskButton } from "./AddTaskButton";
 import { createClient } from "@/utils/supabase/client";
 import { ListWithTaskIds, useProjectContext } from "../contexts/ProjectContextState";
 import { FaPen } from "react-icons/fa6";
+import { useRef, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Dialog } from "@headlessui/react";
 
 interface Props {
   data: ListWithTaskIds
@@ -78,7 +81,7 @@ const TaskColumn: React.FC<Props> = ({ data, index }) => {
           {...provided.dragHandleProps}
           
           >
-          <div className="flex justify-between flex-wrap">
+          <div className="flex justify-between flex-wrap items-center">
             <TaskColumnTitle data={data} />
             <TaskColumnDropDown onDelete={handleDeleteColumn} />
           </div>
@@ -107,13 +110,90 @@ interface TaskCardProps {
   index: number;
 }
 
+type Inputs = {
+  title: string
+}
+
 const TaskCard: React.FC<TaskCardProps> = ({ data }) => {
-  return <div className="p-2 bg-white rounded border border-gray-400 shadow-md flex items-center justify-between group">
-    
-    <div>
+  const [isEditing, setIsEditing] = useState(false);
+  const buttonRef = useRef(null);
+  const { register, handleSubmit, reset } = useForm<Inputs>();
+  const supabase = createClient();
+  const { setTasks } = useProjectContext();
+
+  const toggleIsEditing = () => {
+    setIsEditing((prev) => !prev);
+  }
+
+
+  const onSubmit: SubmitHandler<Inputs> = async (formData) => {
+    if (data.title) {
+      const { data : resData, error } = await supabase.from("task").update({ title: formData.title }).eq("id", data.id).select();
+      if (resData && resData[0]) {
+        if (resData[0]) {
+          setTasks((prev) => {
+            return prev.map((task) => {
+              if (task.id === data.id) {
+                return {
+                  ...resData[0],
+                }
+              }
+              else {
+                return task;
+              }
+            })
+          })
+          toggleIsEditing();
+          return;
+        }
+        if (error) {
+          console.error("thithti");
+        }
+        
+      }
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent ) => {
+    if (e.relatedTarget === buttonRef.current) {
+      e.preventDefault();
+      return;
+    }
+    toggleIsEditing();
+  }
+
+  const handleKeyPress = (e : React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit(onSubmit)();
+    }
+  }
+
+  if (isEditing) {
+    return (
+      <form className="flex flex-col gap-2 relative" onSubmit={handleSubmit(onSubmit)}>
+        <textarea
+          {...register("title", { required: true })}
+          className="p-2 rounded flex w-full border border-gray-400 shadow-md resize-none overflow-y-hidden h-auto z-50"
+          autoFocus
+          onBlur={handleBlur}
+          defaultValue={data.title ?? "Untitled Task"}
+          onFocus={(e) => e.target.select()}
+          rows={3}
+          onKeyDown={handleKeyPress}
+          />
+        <button type="submit" className="p-2 border border-gray-100 self-start bg-blue-600 rounded text-white z-50" ref={buttonRef}>Save</button>
+        <div className="fixed top-0 left-0 w-full h-full bg-black opacity-10 pointer-events-none"></div>
+      </form>
+    )
+  }
+
+
+  return <div className="p-2 bg-white rounded border border-gray-400 shadow-md flex items-start justify-between group cursor-pointer">
+    <div className="w-5/6 break-words">
       {data.title} position: {data.position}
     </div>
-    <div className="h-[30px] w-[30px] bg-gray-200 rounded-full flex justify-center items-center group-hover:opacity-100 opacity-0" onClick={() => {}}>
+    <div className="h-[30px] w-[30px] bg-gray-200 rounded-full flex justify-center items-center group-hover:opacity-100 opacity-0" onClick={toggleIsEditing}>
       <FaPen size={12} className="group-hover:opacity-100 opacity-0 cursor-pointer"/>
     </div>
     

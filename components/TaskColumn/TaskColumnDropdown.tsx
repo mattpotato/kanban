@@ -28,7 +28,7 @@ const TaskColumnDropDown: React.FC<Props> = ({ onDelete }) => {
             <Menu.Item>
               {({ active }) => (
                 <a
-                  className={`${active && 'bg-gray-200'}`}
+                  className={`${active && 'bg-gray-200'} p-1`}
                   onClick={onDelete}
                 >
                   Delete

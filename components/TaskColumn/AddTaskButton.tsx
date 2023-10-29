@@ -22,7 +22,6 @@ export const AddTaskButton: React.FC<Props> = ({ onAddTask }) => {
   };
 
   const handleBlur = (e: React.FocusEvent ) => {
-    console.log(e.relatedTarget?.id);
     if (e.relatedTarget === buttonRef.current) {
       e.preventDefault();
       return;

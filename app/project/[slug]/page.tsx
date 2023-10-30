@@ -114,7 +114,7 @@ export default function Page({ params }: { params: { slug: string } }) {
       }
       else {
         const firstTaskId = sourceListItems[destination.index];
-        const offset = source.index === sourceListItems.length - 1 ? - 1 : + 1;
+        const offset = source.index < destination.index ? 1 : -1;
         const secondTaskId = sourceListItems[destination.index + offset];
         const firstTask = tasks.find((task) => task.id === firstTaskId);
         const secondTask = tasks.find((task) => task.id === secondTaskId);
@@ -180,7 +180,6 @@ export default function Page({ params }: { params: { slug: string } }) {
         const secondTaskId = destinationItems[destination.index - 1];
         const firstTask = tasks.find((task) => task.id === firstTaskId);
         const secondTask = tasks.find((task) => task.id === secondTaskId);
-
         if (firstTask && secondTask) {
           newPosition = (firstTask.position + secondTask.position) / 2;
         }

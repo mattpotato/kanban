@@ -1,27 +1,25 @@
 "use client"
 import { createClient } from "@/utils/supabase/client";
 import { Menu, Transition } from "@headlessui/react";
-import { useRouter } from "next/navigation";
 import React, { Fragment } from "react";
 import { FaEllipsis, FaPlus } from "react-icons/fa6";
 import { useDashboardContext } from "./contexts/DashboardContextState";
+import Link from "next/link";
 
 interface ProjectCardProps {
   project: Project
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
-  const router = useRouter();
-
-  const handleClick = () => {
-    router.push(`/project/${project.id}`);
-  }
-    return <div className="w-80 min-h-[10rem] border rounded-sm p-2 flex flex-1 justify-center items-center shadow-md hover:bg-gray-200 transition duration-300 ease-in-out text-lg relative cursor-pointer" onClick={handleClick}>
+  return <Link
+    className="w-80 min-h-[10rem] border rounded-sm p-2 flex flex-1 justify-center items-center shadow-md hover:bg-gray-200 transition duration-300 ease-in-out text-lg relative cursor-pointer"
+    href={`/project/${project.id}`}
+  >
     <div>{project.title}</div>
     <div className="absolute top-2 right-2">
-      <ProjectCardDropdown projectId={project.id}/>
+      <ProjectCardDropdown projectId={project.id} />
     </div>
-  </div>
+  </Link>
 }
 
 interface DropdownProps {
@@ -31,7 +29,7 @@ const ProjectCardDropdown: React.FC<DropdownProps> = ({ projectId }) => {
   const supabase = createClient();
   const { setProjects } = useDashboardContext();
 
-  const handleDelete = async (e : React.MouseEvent) => {
+  const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
     const { data, error } = await supabase.from("project").delete().eq("id", projectId).select();
     if (data?.length) {
@@ -80,7 +78,7 @@ const ProjectCardDropdown: React.FC<DropdownProps> = ({ projectId }) => {
 
 
 export default function ProjectList() {
-  const  { projects, createProject } = useDashboardContext();
+  const { projects, createProject } = useDashboardContext();
 
   return (
     <div className="flex gap-4 items-center">
@@ -90,9 +88,9 @@ export default function ProjectList() {
         })}
       </div>
       <button className="h-14 border rounded-sm p-2 flex items-center gap-2 hover:bg-gray-200 transition duration-300 ease-in-out" onClick={createProject}>
-        <FaPlus size={16}/>
+        <FaPlus size={16} />
         Create project
-        </button>
+      </button>
     </div>
   )
 }

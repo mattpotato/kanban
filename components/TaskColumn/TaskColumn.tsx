@@ -8,7 +8,6 @@ import { ListWithTaskIds, useProjectContext } from "../contexts/ProjectContextSt
 import { FaPen } from "react-icons/fa6";
 import { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Dialog } from "@headlessui/react";
 
 interface Props {
   data: ListWithTaskIds

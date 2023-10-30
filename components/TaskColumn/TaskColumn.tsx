@@ -6,7 +6,7 @@ import { AddTaskButton } from "./AddTaskButton";
 import { createClient } from "@/utils/supabase/client";
 import { ListWithTaskIds, useProjectContext } from "../contexts/ProjectContextState";
 import { FaPen } from "react-icons/fa6";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 interface Props {
@@ -182,7 +182,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ data }) => {
           onKeyDown={handleKeyPress}
           />
         <button type="submit" className="p-2 border border-gray-100 self-start bg-blue-600 rounded text-white z-50" ref={buttonRef}>Save</button>
-        <div className="fixed top-0 left-0 w-full h-full bg-black opacity-10 pointer-events-none"></div>
       </form>
     )
   }

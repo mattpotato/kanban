@@ -50,26 +50,31 @@ export default function Page({ params }: { params: { slug: string } }) {
     if (!destination) return;
 
     if (type === "column") {
+      if (source.index === destination.index) return;
       const sourceList = columns[columnOrder[source.index]];
       const newList = columnOrder.filter((_, idx) => idx !== source.index);
-      newList.splice(destination.index, 0, columnOrder[source.index]);
-      setColumnOrder(newList);
       let newPosition = 0;
       if (destination.index === Object.keys(columns).length - 1) {
+        console.log("yo");
         const lastItem = columns[columnOrder[destination.index]];
         newPosition = lastItem.position + 65535;
       }
       else if (destination.index === 0) {
+        console.log("yo2");
         const firstItem = columns[columnOrder[destination.index]];
         newPosition = firstItem.position / 2;
       }
       else {
+        console.log("yo3");
         const firstItem = columns[columnOrder[destination.index]];
-        const offset = source.index === Object.keys(columns).length - 1 ? -1 : + 1;
+        // if source.index < destination - we will move things to the left, and so offset should be + 1
+        // if source.index > destination.index - we will move things to the right, so offset should be - 1
+        const offset = source.index < destination.index ? 1 : - 1
         const secondItem = columns[columnOrder[destination.index + offset]];
-        console.log({ firstItem, secondItem });
         newPosition = (firstItem.position + secondItem.position) / 2;
       }
+      newList.splice(destination.index, 0, columnOrder[source.index]);
+      setColumnOrder(newList);
       setColumns((prev) => {
         return {
           ...prev,

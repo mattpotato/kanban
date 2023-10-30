@@ -189,7 +189,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ data }) => {
 
   return <div className="p-2 bg-white rounded border border-gray-400 shadow-md flex items-start justify-between group cursor-pointer">
     <div className="w-5/6 break-words">
-      {data.title} position: {data.position}
+      {data.title}
     </div>
     <div className="h-[30px] w-[30px] bg-gray-200 rounded-full flex justify-center items-center group-hover:opacity-100 opacity-0" onClick={toggleIsEditing}>
       <FaPen size={12} className="group-hover:opacity-100 opacity-0 cursor-pointer"/>

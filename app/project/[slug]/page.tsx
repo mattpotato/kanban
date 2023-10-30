@@ -164,7 +164,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         }
       }
       else if (destination.index === 0) {
-        const firstTaskId = destinationItems[destination.index + 1];
+        const firstTaskId = destinationItems[destination.index];
         const firstTask = tasks.find((task) => task.id === firstTaskId);
         if (firstTask) {
           newPosition = firstTask.position / 2;

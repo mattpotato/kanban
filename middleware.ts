@@ -1,6 +1,8 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+const protectedRoutes = ["dashboard", "project"];
+
 export async function middleware(request: NextRequest) {
   // Create an unmodified response
   let response = NextResponse.next({
@@ -61,14 +63,24 @@ export async function middleware(request: NextRequest) {
     // https://supabase.com/docs/guides/auth/auth-helpers/nextjs#managing-session-with-middleware
     await supabase.auth.getSession()
 
-    // If the session was refreshed, the request and response cookies will have been updated
-    // If the session was not refreshed, the request and response cookies will be unchanged
     const url = request.nextUrl.clone()   
     const user = await supabase.auth.getUser();
-    if (url.pathname === '/' && user.data) {
+    const isAuthenticated = !!user.data.user;
+
+    const splitUrl = request.nextUrl.pathname.split("/");
+
+    if (!isAuthenticated && protectedRoutes.includes(splitUrl[1])) {
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
+
+    if (url.pathname === '/' && isAuthenticated) {
       url.pathname = '/dashboard'
       return NextResponse.redirect(url)   
     } 
+
+    // If the session was refreshed, the request and response cookies will have been updated
+    // If the session was not refreshed, the request and response cookies will be unchanged
     return response
   } catch (e) {
     // If you are here, a Supabase client could not be created!

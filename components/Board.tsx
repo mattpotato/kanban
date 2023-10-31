@@ -242,7 +242,9 @@ const Board: React.FC<Props> = ({ projectId }) => {
               return <TaskColumn data={col} key={`col-${col.id}`} index={index} />
             })}
             {provided.placeholder}
-            <AddListButton onCreateList={handleCreateList} />
+            <div className="px-4">
+              <AddListButton onCreateList={handleCreateList} />
+            </div>
           </div>
         )}
       </Droppable>

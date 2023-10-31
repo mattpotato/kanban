@@ -12,7 +12,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return <Link
-    className="w-80 min-h-[10rem] border rounded-sm p-2 flex flex-1 justify-center items-center shadow-md hover:bg-gray-200 transition duration-300 ease-in-out text-lg relative cursor-pointer"
+    className="w-72 min-h-[10rem] border rounded-sm p-2 flex justify-center items-center shadow-md hover:bg-gray-200 transition duration-300 ease-in-out text-lg relative cursor-pointer"
     href={`/project/${project.id}`}
   >
     <div>{project.title}</div>
@@ -81,16 +81,16 @@ export default function ProjectList() {
   const { projects, createProject } = useDashboardContext();
 
   return (
-    <div className="flex gap-4 items-center">
-      <div className="flex gap-4">
+    <div className="flex gap-4 items-center flex-wrap">
+      <div className="flex gap-4 flex-wrap justify-center">
         {projects.map((project) => {
           return <ProjectCard key={project.id} project={project} />
         })}
-      </div>
-      <button className="h-14 border rounded-sm p-2 flex items-center gap-2 hover:bg-gray-200 transition duration-300 ease-in-out" onClick={createProject}>
+      <button className="w-72 h-24 border rounded-sm p-2 flex justify-center items-center gap-2 hover:bg-gray-200 transition duration-300 ease-in-out" onClick={createProject}>
         <FaPlus size={16} />
         Create project
       </button>
+      </div>
     </div>
   )
 }

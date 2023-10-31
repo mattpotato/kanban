@@ -60,17 +60,14 @@ const Board: React.FC<Props> = ({ projectId }) => {
       const newList = columnOrder.filter((_, idx) => idx !== source.index);
       let newPosition = 0;
       if (destination.index === Object.keys(columns).length - 1) {
-        console.log("yo");
         const lastItem = columns[columnOrder[destination.index]];
         newPosition = lastItem.position + 65535;
       }
       else if (destination.index === 0) {
-        console.log("yo2");
         const firstItem = columns[columnOrder[destination.index]];
         newPosition = firstItem.position / 2;
       }
       else {
-        console.log("yo3");
         const firstItem = columns[columnOrder[destination.index]];
         // if source.index < destination - we will move things to the left, and so offset should be + 1
         // if source.index > destination.index - we will move things to the right, so offset should be - 1
@@ -97,6 +94,7 @@ const Board: React.FC<Props> = ({ projectId }) => {
       return;
     }
     if (source.droppableId === destination.droppableId) {
+      if (source.index === destination.index) return;
       const sourceList = columns[source.droppableId];
       const sourceListItems = [...sourceList.taskIds];
       const originalTaskId = sourceListItems[source.index];

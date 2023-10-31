@@ -12,7 +12,7 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return <Link
-    className="w-72 min-h-[10rem] border rounded-sm p-2 flex justify-center items-center shadow-md hover:bg-gray-200 transition duration-300 ease-in-out text-lg relative cursor-pointer"
+    className="w-72 min-h-[10rem] border rounded-sm p-2 flex justify-center items-center shadow-md hover:bg-gray-200 border-gray-400 transition duration-300 ease-in-out text-lg relative cursor-pointer"
     href={`/project/${project.id}`}
   >
     <div>{project.title}</div>

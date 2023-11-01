@@ -12,13 +12,10 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
   return <Link
-    className="w-72 min-h-[10rem] border rounded-sm p-2 flex justify-center items-center shadow-md hover:bg-gray-200 border-gray-400 transition duration-300 ease-in-out text-lg relative cursor-pointer"
+    className="bg-white w-64 h-24 border rounded-sm p-2 flex justify-center items-center shadow-md hover:bg-gray-200 border-gray-400 transition duration-300 ease-in-out text-lg relative cursor-pointer"
     href={`/project/${project.id}`}
   >
-    <div>{project.title}</div>
-    <div className="absolute top-2 right-2">
-      <ProjectCardDropdown projectId={project.id} />
-    </div>
+    <div className="truncate">{project.title}</div>
   </Link>
 }
 
@@ -57,7 +54,7 @@ const ProjectCardDropdown: React.FC<DropdownProps> = ({ projectId }) => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items className="flex flex-col absolute top-full bg-white rounded border border-gray-400 p-2 w-40 cursor-pointer z-50">
+          <Menu.Items className="flex flex-col absolute top-full bg-white rounded border border-gray-400 p-2 w-40 cursor-pointer z-50" onBlur={(e) => e.preventDefault()}>
             <Menu.Item>
               {({ active }) => (
                 <a
@@ -82,11 +79,11 @@ export default function ProjectList() {
 
   return (
     <div className="flex gap-4 items-center flex-wrap">
-      <div className="flex gap-4 flex-wrap justify-center">
+      <div className="flex gap-4 flex-wrap max-sm:justify-center">
         {projects.map((project) => {
           return <ProjectCard key={project.id} project={project} />
         })}
-      <button className="w-72 h-24 border rounded-sm p-2 flex justify-center items-center gap-2 hover:bg-gray-200 transition duration-300 ease-in-out" onClick={createProject}>
+      <button className="w-64 h-24 border rounded-sm p-2 flex justify-center self-start items-center gap-2 hover:bg-gray-200 transition duration-300 ease-in-out" onClick={createProject}>
         <FaPlus size={16} />
         Create project
       </button>

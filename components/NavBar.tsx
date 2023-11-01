@@ -9,7 +9,7 @@ export default async function NavBar() {
 
   return (
     <nav className="flex justify-between py-2 px-5 border-b border-b-foreground/10 h-16 items-center">
-      <Link href="/">Kanban</Link>
+      <Link href="/" className="font-bold">Kanban</Link>
       <div className="flex gap-2 items-center">
         {user && <div>{user.email}</div>}
         {user && <form action="/auth/sign-out" method="post">
@@ -17,12 +17,6 @@ export default async function NavBar() {
             Logout
           </button>
         </form>}
-        {!user && <Link
-          href="/login"
-          className="py-2 px-3 flex rounded-md no-underline bg-btn-background hover:bg-btn-background-hover"
-        >
-          Login
-        </Link>}
       </div>
     </nav>
   )

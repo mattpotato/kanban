@@ -11,7 +11,7 @@ const TaskColumnDropDown: React.FC<Props> = ({ onDelete }) => {
     <div className="relative flex-grow-0 flex self-start">
       <Menu>
         <Menu.Button>
-          <div className="h-[30px] w-[30px] rounded-full flex justify-center items-center hover:bg-gray-200" onClick={() => { }}>
+          <div className="h-[30px] w-[30px] rounded-full flex justify-center items-center hover:bg-gray-200">
             <FaEllipsis className="rounded" size={24} />
           </div>
         </Menu.Button>

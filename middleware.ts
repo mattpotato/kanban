@@ -70,11 +70,11 @@ export async function middleware(request: NextRequest) {
     const splitUrl = request.nextUrl.pathname.split("/");
 
     if (!isAuthenticated && protectedRoutes.includes(splitUrl[1])) {
-      url.pathname = "/login";
+      url.pathname = "/";
       return NextResponse.redirect(url);
     }
 
-    if ((url.pathname === '/' || url.pathname === "/login") && isAuthenticated) {
+    if ((url.pathname === '/') && isAuthenticated) {
       url.pathname = '/dashboard'
       return NextResponse.redirect(url)   
     } 

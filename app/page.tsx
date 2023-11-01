@@ -7,14 +7,6 @@ export default async function Index() {
     <div className="flex-1 w-full flex flex-col gap-20 items-center">
       <div className="animate-in flex-1 flex flex-col gap-20 opacity-0 px-3 w-full">
         <main className="flex flex-1 justify-center items-center gap-72">
-          <div className="max-md:hidden flex flex-col gap-20">
-            <p className="text-3xl">
-              Kanban Board
-            </p>
-            <p className="text-2xl">
-              Organize your projects and tasks!
-            </p>
-          </div>
           <form
             className="flex-1 flex flex-col max-w-md justify-center gap-2 text-foreground"
             action="/auth/sign-in"
@@ -54,7 +46,7 @@ export default async function Index() {
               formAction="/auth/sign-up"
               className="border border-foreground/20 rounded-md px-4 py-2 text-foreground mb-2"
             >
-              Sign Up
+              Sign up with email
             </button>
           </form>
         </main>

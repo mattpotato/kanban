@@ -20,13 +20,13 @@ See it live on https://canban-pi.vercel.app/
 
 3. Setup supabase and run supabase migrations (Docker is required):
 
-  ```
-  npx supabase init
-  npx supabase start
-  npx supabase login
-  npx supabase db reset
-  npx supabase db push
-  ```
+     ```
+     npx supabase init
+     npx supabase start
+     npx supabase login
+     npx supabase db reset
+     npx supabase db push
+     ```
 
 4. You can now run the Next.js local development server:
 

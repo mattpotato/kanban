@@ -24,6 +24,7 @@ See it live on https://canban-pi.vercel.app/
      npx supabase init
      npx supabase start
      npx supabase login
+     npx supabase link --project-ref <project-id>
      npx supabase db reset
      npx supabase db push
      ```
